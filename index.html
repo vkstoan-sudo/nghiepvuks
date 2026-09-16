@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hệ Thống Kỹ Năng Nghiệp Vụ Kiểm Sát</title>
+    <!-- Google Fonts & Font Awesome Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #0d47a1;
+            --secondary-color: #b71c1c;
+            --accent-color: #ffb300;
+            --bg-light: #f4f6f9;
+            --text-dark: #333333;
+            --card-bg: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        /* Hero Header Section */
+        .hero {
+            background: linear-gradient(135deg, rgba(13, 71, 161, 0.9), rgba(183, 28, 28, 0.85)), 
+                        url('https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=1350&q=80') center/cover no-repeat;
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .hero img.logo {
+            width: 85px;
+            height: 85px;
+            margin-bottom: 12px;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+        }
+
+        .hero h2 {
+            font-size: 1.1rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #e0e0e0;
+        }
+
+        .hero h1 {
+            font-size: 2.1rem;
+            font-weight: 700;
+            margin: 6px 0;
+            color: var(--accent-color);
+            text-transform: uppercase;
+        }
+
+        .hero p {
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+
+        /* Banner cài đặt ứng dụng */
+        .app-install-banner {
+            background-color: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 12px 20px;
+            max-width: 1100px;
+            margin: 20px auto 0;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .app-install-banner p { font-size: 0.9rem; color: #856404; }
+        .app-install-banner strong { display: block; margin-bottom: 3px; }
+
+        /* Main Container */
+        .container {
+            max-width: 1100px;
+            margin: 25px auto;
+            padding: 0 15px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 8px;
+        }
+
+        .section-title::after {
+            content: '';
+            width: 60px;
+            height: 3px;
+            background: var(--secondary-color);
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        /* Quick Navigation Grid */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            padding: 18px;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.05);
+            transition: all 0.2s ease;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-left: 4px solid var(--primary-color);
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .card:hover, .card.active {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            border-left-color: var(--secondary-color);
+            background: #e3f2fd;
+        }
+
+        .card .icon-box {
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            background: rgba(13, 71, 161, 0.1);
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+
+        .card-content h3 { font-size: 1rem; color: var(--text-dark); margin-bottom: 3px; }
+        .card-content p { font-size: 0.82rem; color: #666; }
+
+        /* Module Content Display Areas */
+        .module-section {
+            display: none;
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+            margin-top: 20px;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .module-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .module-header {
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--primary-color);
+        }
+
+        .module-header h2 { font-size: 1.4rem; }
+
+        /* Tính Toán Grid */
+        .calc-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+            gap: 20px;
+        }
+
+        .calc-card {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 18px;
+            border-top: 4px solid var(--primary-color);
+        }
+
+        .calc-card h4 {
+            color: var(--primary-color);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+        }
+
+        .form-group { margin-bottom: 12px; }
+        .form-group label { display: block; font-size: 0.85rem; font-weight: 500; margin-bottom: 4px; color: #444; }
+        .form-group input, .form-group select { width: 100%; padding: 8px 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 0.9rem; }
+
+        .btn-calc {
+            width: 100%;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 4px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-calc:hover { background: #0a3880; }
+
+        .result-box {
+            margin-top: 12px;
+            padding: 10px;
+            background: #e8f5e9;
+            border-left: 4px solid #2e7d32;
+            border-radius: 4px;
+            display: none;
+        }
+        .result-box span { font-size: 1.05rem; font-weight: 700; color: #1b5e20; display: block; }
+        .note { font-size: 0.75rem; color: #666; margin-top: 3px; }
+
+        /* Search & Data List */
+        .search-box {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .search-box input {
+            flex: 1;
+            padding: 10px 14px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 0.95rem;
+        }
+        .search-box button {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .content-list { list-style: none; }
+        .content-list li {
+            padding: 14px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .content-list li:hover { background: #f8f9fa; }
+        .content-list h4 { font-size: 1rem; color: var(--primary-color); }
+        .content-list p { font-size: 0.88rem; color: #555; }
+        .content-list .meta { font-size: 0.78rem; color: #888; display: flex; gap: 15px; }
+
+        /* External Link Button */
+        .btn-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--primary-color);
+            color: white;
+            padding: 10px 18px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            margin-top: 15px;
+        }
+        .btn-link:hover { background: #0a3880; }
+
+        /* Footer */
+        footer {
+            background-color: #1e272e;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            font-size: 0.9rem;
+        }
+        footer p { opacity: 0.8; margin-top: 5px; }
+
+        @media (max-width: 600px) {
+            .hero h1 { font-size: 1.6rem; }
+            .hero h2 { font-size: 0.95rem; }
+            .app-install-banner { flex-direction: column; gap: 10px; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header class="hero">
+        <img src="https://cdn-icons-png.flaticon.com/512/3233/3233515.png" alt="Biểu tượng VKSND" class="logo">
+        <h2>Viện Kiểm Sát Nhân Dân Khu Vực 10 -Thành Phố Đà Nẵng</h2>
+        <h1>KỸ NĂNG NGHIỆP VỤ</h1>
+        <p>PHỤC VỤ CÔNG TÁC KIỂM SÁT</p>
+    </header>
+
+    <!-- Banner Cài Đặt -->
+    <div class="app-install-banner">
+        <div>
+            <strong><i class="fa-solid fa-mobile-screen-button"></i> Cài ra màn hình điện thoại</strong>
+            <p>Sử dụng tính hạn, Án lệ, Bản án, Thông báo rút kinh nghiệm ngay cả khi không có mạng Internet.</p>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <main class="container">
+        <h2 class="section-title">DANH MỤC NGHIỆP VỤ</h2>
+
+        <!-- Quick Tabs Navigation -->
+        <div class="grid">
+            <div class="card active" onclick="switchModule('module-tinh-han', this)">
+                <div class="icon-box"><i class="fa-solid fa-calculator"></i></div>
+                <div class="card-content">
+                    <h3>Tính Thời Hạn Tố Tụng</h3>
+                    <p>Tính hạn tạm giam, điều tra, truy tố.</p>
+                </div>
+            </div>
+
+            <div class="card" onclick="switchModule('module-an-le', this)">
+                <div class="icon-box"><i class="fa-solid fa-book-bookmark"></i></div>
+                <div class="card-content">
+                    <h3>Án Lệ</h3>
+                    <p>Tra cứu hệ thống Án lệ đã công bố.</p>
+                </div>
+            </div>
+
+            <div class="card" onclick="switchModule('module-cong-bo-ban-an', this)">
+                <div class="icon-box"><i class="fa-solid fa-scale-balanced"></i></div>
+                <div class="card-content">
+                    <h3>Công Bố Bản Án</h3>
+                    <p>Tra cứu bản án, quyết định Tòa án.</p>
+                </div>
+            </div>
+
+            <div class="card" onclick="switchModule('module-rut-kinh-nghiem', this)">
+                <div class="icon-box"><i class="fa-solid fa-file-waveform"></i></div>
+                <div class="card-content">
+                    <h3>TB Rút Kinh Nghiệm</h3>
+                    <p>Tổng hợp thông báo rút kinh nghiệm nghiệp vụ.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODULE 1: TÍNH THỜI HẠN TỐ TỤNG -->
+        <section id="module-tinh-han" class="module-section active">
+            <div class="module-header">
+                <i class="fa-solid fa-calculator fa-2x"></i>
+                <h2>CÔNG CỤ TÍNH THỜI HẠN TỐ TỤNG HÌNH SỰ</h2>
+            </div>
+            <div class="calc-grid">
+                <!-- Tạm giam -->
+                <div class="calc-card">
+                    <h4><i class="fa-solid fa-user-lock"></i> Tính Thời Hạn Tạm Giam</h4>
+                    <div class="form-group">
+                        <label>Ngày bắt đầu tạm giam:</label>
+                        <input type="date" id="tg-start-date">
+                    </div>
+                    <div class="form-group">
+                        <label>Thời hạn tạm giam:</label>
+                        <select id="tg-months">
+                            <option value="2">02 tháng (Ít nghiêm trọng)</option>
+                            <option value="3">03 tháng (Nghiêm trọng)</option>
+                            <option value="4">04 tháng (Rất / ĐB nghiêm trọng)</option>
+                        </select>
+                    </div>
+                    <button class="btn-calc" onclick="calcTamGiam()">Tính Ngày Hết Hạn</button>
+                    <div class="result-box" id="tg-result">
+                        <label>Ngày hết hạn tạm giam:</label>
+                        <span id="tg-date-output">--/--/----</span>
+                        <div class="note">* Căn cứ Điều 173 BLTTHS</div>
+                    </div>
+                </div>
+
+                <!-- Điều tra -->
+                <div class="calc-card">
+                    <h4><i class="fa-solid fa-magnifying-glass"></i> Tính Thời Hạn Điều Tra</h4>
+                    <div class="form-group">
+                        <label>Ngày khởi tố vụ án / gia hạn:</label>
+                        <input type="date" id="dt-start-date">
+                    </div>
+                    <div class="form-group">
+                        <label>Loại tội phạm:</label>
+                        <select id="dt-type">
+                            <option value="2">Ít nghiêm trọng (02 tháng)</option>
+                            <option value="3">Nghiêm trọng (03 tháng)</option>
+                            <option value="4">Rất / ĐB nghiêm trọng (04 tháng)</option>
+                        </select>
+                    </div>
+                    <button class="btn-calc" onclick="calcDieuTra()">Tính Ngày Hết Hạn</button>
+                    <div class="result-box" id="dt-result">
+                        <label>Ngày hết hạn điều tra:</label>
+                        <span id="dt-date-output">--/--/----</span>
+                        <div class="note">* Căn cứ Điều 172 BLTTHS</div>
+                    </div>
+                </div>
+
+                <!-- Truy tố -->
+                <div class="calc-card">
+                    <h4><i class="fa-solid fa-file-signature"></i> Thời Hạn Truy Tố (VKS)</h4>
+                    <div class="form-group">
+                        <label>Ngày VKS nhận hồ sơ:</label>
+                        <input type="date" id="tt-start-date">
+                    </div>
+                    <div class="form-group">
+                        <label>Loại tội phạm:</label>
+                        <select id="tt-type">
+                            <option value="20">Ít / Nghiêm trọng (20 ngày)</option>
+                            <option value="30">Rất / ĐB nghiêm trọng (30 ngày)</option>
+                        </select>
+                    </div>
+                    <button class="btn-calc" onclick="calcTruyTo()">Tính Ngày Hết Hạn</button>
+                    <div class="result-box" id="tt-result">
+                        <label>Ngày hết hạn quyết định truy tố:</label>
+                        <span id="tt-date-output">--/--/----</span>
+                        <div class="note">* Căn cứ Điều 240 BLTTHS</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MODULE 2: ÁN LỆ -->
+        <section id="module-an-le" class="module-section">
+            <div class="module-header">
+                <i class="fa-solid fa-book-bookmark fa-2x"></i>
+                <h2>TRA CỨU HỆ THỐNG ÁN LỆ VIỆT NAM</h2>
+            </div>
+            <div class="search-box">
+                <input type="text" placeholder="Nhập từ khóa hoặc số án lệ (ví dụ: Án lệ 01, Hình sự, Dân sự)...">
+                <button><i class="fa-solid fa-magnifying-glass"></i> Tìm kiếm</button>
+            </div>
+            <ul class="content-list">
+                <li>
+                    <h4>Án lệ số 01/2016/AL về vụ án Hình sự</h4>
+                    <p>Tình tiết "Có tính chất giận dữ, bột phát" trong tội "Giết người".</p>
+                    <div class="meta"><span><i class="fa-regular fa-calendar"></i> Ban hành: 06/04/2016</span><span><i class="fa-solid fa-folder"></i> Lĩnh vực: Hình sự</span></div>
+                </li>
+                <li>
+                    <h4>Án lệ số 02/2016/AL về vụ án Dân sự</h4>
+                    <p>Xác định đòi lại tài sản là nhà đất bị chiếm đoạt và nghĩa vụ thanh toán giá trị đầu tư.</p>
+                    <div class="meta"><span><i class="fa-regular fa-calendar"></i> Ban hành: 06/04/2016</span><span><i class="fa-solid fa-folder"></i> Lĩnh vực: Dân sự</span></div>
+                </li>
+            </ul>
+            <a href="https://anle.toaan.gov.vn" target="_blank" class="btn-link"><i class="fa-solid fa-arrow-up-right-from-square"></i> Truy cập Cổng thông tin Án lệ TANDTC</a>
+        </section>
+
+        <!-- MODULE 3: CÔNG BỐ BẢN ÁN -->
+        <section id="module-cong-bo-ban-an" class="module-section">
+            <div class="module-header">
+                <i class="fa-solid fa-scale-balanced fa-2x"></i>
+                <h2>CỔNG CÔNG BỐ BẢN ÁN, QUYẾT ĐỊNH TÒA ÁN</h2>
+            </div>
+            <div class="search-box">
+                <input type="text" placeholder="Nhập số bản án, tội danh hoặc từ khóa tìm kiếm...">
+                <button><i class="fa-solid fa-magnifying-glass"></i> Tra cứu</button>
+            </div>
+            <ul class="content-list">
+                <li>
+                    <h4>Bản án số 12/2024/HS-ST ngày 15/03/2024 về Tội Trộm cắp tài sản</h4>
+                    <p>TAND TP. Cần Thơ - Xác định giá trị tài sản thiệt hại và xét lịch sử nhân thân của bị cáo.</p>
+                    <div class="meta"><span><i class="fa-regular fa-calendar"></i> Đăng tải: 20/03/2024</span><span><i class="fa-solid fa-gavel"></i> Cấp xét xử: Sơ thẩm</span></div>
+                </li>
+                <li>
+                    <h4>Bản án số 45/2024/DS-PT ngày 10/05/2024 về Tranh chấp hợp đồng vay tài sản</h4>
+                    <p>TAND TP. Cần Thơ - Xem xét nghĩa vụ trả nợ gốc và tính lãi suất quá hạn theo BLDS.</p>
+                    <div class="meta"><span><i class="fa-regular fa-calendar"></i> Đăng tải: 18/05/2024</span><span><i class="fa-solid fa-gavel"></i> Cấp xét xử: Phúc thẩm</span></div>
+                </li>
+            </ul>
+            <a href="https://congbobanan.toaan.gov.vn" target="_blank" class="btn-link"><i class="fa-solid fa-arrow-up-right-from-square"></i> Mở Trang Công Bố Bản Án TANDTC</a>
+        </section>
+
+        <!-- MODULE 4: THÔNG BÁO RÚT KINH NGHIỆM -->
+        <section id="module-rut-kinh-nghiem" class="module-section">
+            <div class="module-header">
+                <i class="fa-solid fa-file-waveform fa-2x"></i>
+                <h2>THÔNG BÁO RÚT KINH NGHIỆM NGHIỆP VỤ KIỂM SÁT</h2>
+            </div>
+            <div class="search-box">
+                <input type="text" placeholder="Tìm thông báo rút kinh nghiệm theo chuyên đề, lĩnh vực...">
+                <button><i class="fa-solid fa-magnifying-glass"></i> Tìm kiếm</button>
+            </div>
+            <ul class="content-list">
+                <li>
+                    <h4>TB Rút kinh nghiệm số 15/TB-VKS về Công tác thực hành quyền công tố & KS điều tra án Hình sự</h4>
+                    <p>Rút kinh nghiệm vi phạm trong việc xác định tội danh, đánh giá chứng cứ nguồn tin tội phạm và gia hạn thời hạn điều tra.</p>
+                    <div class="meta"><span><i class="fa-regular fa-calendar"></i> Ngày phát hành: 12/01/2025</span><span><i class="fa-solid fa-building-columns"></i> VKSND Cấp cao / VKSND Tỉnh</span></div>
+                </li>
+                <li>
+                    <h4>TB Rút kinh nghiệm số 08/TB-VKS về Công tác kiểm sát giải quyết các vụ án Dân sự, Hôn nhân gia đình</h4>
+                    <p>Rút kinh nghiệm vi phạm của Tòa án trong việc thu thập chứng cứ, xác định người có quyền lợi nghĩa vụ liên quan.</p>
+                    <div class="meta"><span><i class="fa-regular fa-calendar"></i> Ngày phát hành: 05/02/2025</span><span><i class="fa-solid fa-building-columns"></i> Phòng Kiểm sát án Dân sự</span></div>
+                </li>
+            </ul>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <strong>Viện Kiểm Sát Nhân Dân Khu Vực 10 -Thành Phố Đà Nẵng</strong>
+        <p>© 2025 — Hệ thống Kỹ năng nghiệp vụ Kiểm sát</p>
+    </footer>
+
+    <!-- JavaScript Chuyển Tab & Tính Toán -->
+    <script>
+        function switchModule(moduleId, element) {
+            let sections = document.querySelectorAll('.module-section');
+            sections.forEach(s => s.classList.remove('active'));
+
+            let cards = document.querySelectorAll('.grid .card');
+            cards.forEach(c => c.classList.remove('active'));
+
+            document.getElementById(moduleId).classList.add('active');
+            if (element) {
+                element.classList.add('active');
+            }
+        }
+
+        function formatDate(dateObj) {
+            let day = String(dateObj.getDate()).padStart(2, '0');
+            let month = String(dateObj.getMonth() + 1).padStart(2, '0');
+            let year = dateObj.getFullYear();
+            return `${day}/${month}/${year}`;
+        }
+
+        function calcTamGiam() {
+            let inputDate = document.getElementById('tg-start-date').value;
+            let months = parseInt(document.getElementById('tg-months').value);
+            if (!inputDate) return alert('Vui lòng chọn ngày!');
+            let d = new Date(inputDate);
+            d.setMonth(d.getMonth() + months);
+            document.getElementById('tg-date-output').innerText = formatDate(d);
+            document.getElementById('tg-result').style.display = 'block';
+        }
+
+        function calcDieuTra() {
+            let inputDate = document.getElementById('dt-start-date').value;
+            let months = parseInt(document.getElementById('dt-type').value);
+            if (!inputDate) return alert('Vui lòng chọn ngày!');
+            let d = new Date(inputDate);
+            d.setMonth(d.getMonth() + months);
+            document.getElementById('dt-date-output').innerText = formatDate(d);
+            document.getElementById('dt-result').style.display = 'block';
+        }
+
+        function calcTruyTo() {
+            let inputDate = document.getElementById('tt-start-date').value;
+            let days = parseInt(document.getElementById('tt-type').value);
+            if (!inputDate) return alert('Vui lòng chọn ngày!');
+            let d = new Date(inputDate);
+            d.setDate(d.getDate() + days);
+            document.getElementById('tt-date-output').innerText = formatDate(d);
+            document.getElementById('tt-result').style.display = 'block';
+        }
+
+        window.onload = function() {
+            let today = new Date().toISOString().split('T')[0];
+            document.getElementById('tg-start-date').value = today;
+            document.getElementById('dt-start-date').value = today;
+            document.getElementById('tt-start-date').value = today;
+        }
+    </script>
+</body>
+</html>
